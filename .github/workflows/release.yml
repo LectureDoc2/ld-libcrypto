@@ -3,6 +3,9 @@ name: Release
 on:
   push:
     tags: ["v*"]
+  # Lets you re-run a release by hand: Actions -> Release -> Run workflow, and
+  # pick the *tag* (not a branch) in the ref dropdown.
+  workflow_dispatch:
 
 # id-token: write is what lets npm verify this workflow's identity via OIDC —
 # it is the reason no NPM_TOKEN secret is needed.
@@ -40,6 +43,10 @@ jobs:
       - name: Verify tag matches package.json version
         id: version
         run: |
+          if [ "$GITHUB_REF_TYPE" != "tag" ]; then
+            echo "::error::Ran on $GITHUB_REF_TYPE '$GITHUB_REF_NAME'. Re-run and pick a v* tag in the ref dropdown."
+            exit 1
+          fi
           tag="${GITHUB_REF_NAME#v}"
           pkg="$(node -p "require('./package.json').version")"
           if [ "$tag" != "$pkg" ]; then
