@@ -9,7 +9,9 @@
     "recurse": true,
     "readme": "README.md",
     "template": "node_modules/clean-jsdoc-theme/dist",
-    "siteName": "@lecturedoc2/libcrypto"
+    "siteName": "@lecturedoc2/libcrypto",
+    "siteUrl": "https://lecturedoc2.github.io/ld-libcrypto/",
+    "basePath": "/ld-libcrypto/"
   },
   "templates": {
     "cleverLinks": false,
