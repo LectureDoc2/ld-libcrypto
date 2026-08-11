@@ -1,0 +1,18 @@
+{
+  "source": {
+    "include": ["src"],
+    "includePattern": "\\.js$"
+  },
+  "plugins": ["plugins/markdown"],
+  "opts": {
+    "destination": "docs",
+    "recurse": true,
+    "readme": "README.md",
+    "template": "node_modules/clean-jsdoc-theme/dist",
+    "siteName": "@lecturedoc2/libcrypto"
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  }
+}

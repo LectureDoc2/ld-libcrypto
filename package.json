@@ -17,11 +17,16 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./dist/libcrypto.d.ts",
       "default": "./dist/libcrypto.min.js"
     },
-    "./src/libcrypto.js": "./src/libcrypto.js",
+    "./src/libcrypto.js": {
+      "types": "./dist/libcrypto.d.ts",
+      "default": "./src/libcrypto.js"
+    },
     "./package.json": "./package.json"
   },
+  "types": "./dist/libcrypto.d.ts",
   "sideEffects": false,
   "files": [
     "dist",
@@ -42,16 +47,22 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "clean": "rm -rf dist docs",
     "bundle": "esbuild src/libcrypto.js --bundle --format=esm --minify --sourcemap --outfile=dist/libcrypto.min.js",
-    "build": "pnpm run format && pnpm run bundle",
-    "build:ci": "pnpm run format:check && pnpm run bundle",
+    "types": "tsc --project tsconfig.json",
+    "docs": "jsdoc --configure jsdoc.config.json",
+    "build": "pnpm run clean && pnpm run format && pnpm run bundle && pnpm run types",
+    "build:ci": "pnpm run clean && pnpm run format:check && pnpm run bundle && pnpm run types",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:dist": "node test/smoke-dist.js",
     "prepublishOnly": "pnpm run test && pnpm run build:ci && pnpm run test:dist"
   },
   "devDependencies": {
+    "clean-jsdoc-theme": "^5.1.1",
     "esbuild": "^0.28.2",
     "jest": "^30.4.2",
-    "prettier": "3.9.6"
+    "jsdoc": "^4.0.5",
+    "prettier": "3.9.6",
+    "typescript": "^7.0.2"
   }
 }
