@@ -1,5 +1,5 @@
 {
-  "name": "@ld2/libcrypto",
+  "name": "@lecturedoc2/libcrypto",
   "version": "1.0.0",
   "description": "Simple library which provides basic crypto functionality across web and node projects.",
   "keywords": [
@@ -15,15 +15,42 @@
   "license": "BSD-3-Clause",
   "author": "Michael Eichberg (http://www.michael-eichberg.de/)",
   "type": "module",
-  "exports": "./src/libcrypto.js",
+  "exports": {
+    ".": {
+      "default": "./dist/libcrypto.min.js"
+    },
+    "./src/libcrypto.js": "./src/libcrypto.js",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LectureDoc2/ld-libcrypto.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "bundle": "esbuild src/libcrypto.js --bundle --format=esm --minify --sourcemap --outfile=dist/libcrypto.min.js",
+    "build": "pnpm run format && pnpm run bundle",
+    "build:ci": "pnpm run format:check && pnpm run bundle",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:dist": "node test/smoke-dist.js",
+    "prepublishOnly": "pnpm run test && pnpm run build:ci && pnpm run test:dist"
   },
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "jest": "^30.4.2",
     "prettier": "3.9.6"
   }
